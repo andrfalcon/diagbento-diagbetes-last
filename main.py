@@ -6,6 +6,8 @@ from sklearn.metrics import accuracy_score
 from sklearn.model_selection import train_test_split
 from sklearn.ensemble import RandomForestClassifier
 from PIL import Image
+import requests
+from io import BytesIO
 import s3fs
 import streamlit as st
 
@@ -16,8 +18,9 @@ Detect if someone has diabetes using machine learning and Python!
 """)
 
 # Open and display thumbnail image
-# image = Image.open('http://s3.amazonaws.com/diabetes-assets/diabetes_thumbnail.jpg')
-# st.image(image, caption='ML', use_column_width=True)
+response = requests.get('https://diabetes-assets.s3.amazonaws.com/diabetes_thumbnail.jpg')
+image = Image.open(BytesIO(response.content))
+st.image(image, caption='ML', use_column_width=True)
 
 # Get the data
 df = pd.read_csv('s3://diabetes-assets/diabetes.csv')
